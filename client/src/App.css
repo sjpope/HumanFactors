@@ -1,0 +1,22 @@
+header {
+  background-color: #fd5c63;
+  color: #fff;
+  padding: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+header h1 {
+  margin: 0;
+}
+
+header nav ul {
+  margin: 0;
+  padding: 0;
+}
+
+header nav ul li {
+  display: inline;
+  margin-right: 25px;
+}
+
