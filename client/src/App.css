@@ -17,6 +17,7 @@ header nav ul {
 
 header nav ul li {
   display: inline;
+<<<<<<< HEAD
   float: right;
 }
 
@@ -72,3 +73,8 @@ header nav ul li {
 
 
 
+=======
+  margin-right: 25px;
+}
+
+>>>>>>> 859f9c1536219938e0fec62c62b4a9276b736217
