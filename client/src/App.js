@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React from 'react';
 import './App.css';
 import Header from './components/header';
@@ -23,21 +22,8 @@ function App() {
           <RestaurantCard key={index} name={restaurant.name} />
         ))}
       </div>
-=======
-import './App.css';
-import Header from './components/header';
-
-function App() {
-  return(
-    <div>
-      <Header> </Header>
->>>>>>> 859f9c1536219938e0fec62c62b4a9276b736217
     </div>
   );
 }
 
 export default App;
-<<<<<<< HEAD
-
-=======
->>>>>>> 859f9c1536219938e0fec62c62b4a9276b736217

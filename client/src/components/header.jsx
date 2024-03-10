@@ -3,7 +3,7 @@ import React from 'react';
 function Header() {
     return (
         <header>
-            <h1>EasyBook</h1>
+            <h1>TableSpotter</h1>
             <nav>
                 <ul>
                     <li>Sign Up/Log In</li> 

@@ -17,14 +17,13 @@ header nav ul {
 
 header nav ul li {
   display: inline;
-<<<<<<< HEAD
   float: right;
 }
 
 .search-icon-container {
   position: absolute;
   width: 100%;
-  background-color: rgba(31, 48, 94, 0.7); /* Fluorescent effect with opacity */
+  background: linear-gradient(to right, #001f3f, #c7d2ff);
   color: white;
   margin-top: none; /* Remove margin-top */
   margin-bottom: 25px;
@@ -73,8 +72,3 @@ header nav ul li {
 
 
 
-=======
-  margin-right: 25px;
-}
-
->>>>>>> 859f9c1536219938e0fec62c62b4a9276b736217
