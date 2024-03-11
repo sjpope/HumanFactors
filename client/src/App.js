@@ -3,6 +3,7 @@ import './App.css';
 import Header from './components/header';
 import SearchBar from './components/searchBar';
 import RestaurantCard from './components/restaurantCard';
+import Footer from './components/footer';
 
 function App() {
   const restaurants = [
@@ -22,6 +23,7 @@ function App() {
           <RestaurantCard key={index} name={restaurant.name} />
         ))}
       </div>
+      <Footer />
     </div>
   );
 }

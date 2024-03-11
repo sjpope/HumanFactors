@@ -1,6 +1,7 @@
 header {
-  background-color: #fd5c63;
-  color: #fff;
+  /*background-color: #fd5c63;*/
+  /*background-color: rgba(253, 92, 99, 0.5);*/
+  color: black;
   padding: 8px;
   display: flex;
   justify-content: space-between;
@@ -69,6 +70,26 @@ header nav ul li {
   border: 1px solid #ccc; 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
+
+.webFooter {
+  margin-top: 15vh;
+  background-color: #808080;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; 
+  padding: 20px;
+}
+  
+.footer-content {
+    display: flex; 
+}
+  
+.about-us,
+.contact-us {
+    margin: 0 150px; 
+}
+  
 
 
 
