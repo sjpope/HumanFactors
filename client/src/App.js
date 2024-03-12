@@ -1,30 +1,19 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
-import Header from './components/header';
-import SearchBar from './components/searchBar';
-import RestaurantCard from './components/restaurantCard';
-import Footer from './components/footer';
+import HomePage from './pages/HomePage';
+import ResultsPage from './pages/ResultsPage'
 
 function App() {
-  const restaurants = [
-    { name: 'Restaurant 1' },
-    { name: 'Restaurant 2' },
-    { name: 'Restaurant 3' },
-    { name: 'Restaurant 4' },
-    { name: 'Restaurant 5' }
-  ];
-
   return (
-    <div>
-      <Header />
-      <SearchBar />
-      <div className="restaurant-cards-container">
-        {restaurants.map((restaurant, index) => (
-          <RestaurantCard key={index} name={restaurant.name} />
-        ))}
+    <Router>
+      <div>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/results" element={< ResultsPage />} />
+        </Routes>
       </div>
-      <Footer />
-    </div>
+    </Router>
   );
 }
 
