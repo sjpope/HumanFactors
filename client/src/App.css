@@ -94,21 +94,20 @@ header nav ul li {
   height: 100%; 
   width: 250px;
   position: fixed;
-  background: #b1ceeb;
-}
-
-.sideBar h3 {
-  margin: 20px;
 }
 
 .sideBarContent {
-  display: flex;
   flex-direction: column;
-  margin: 15px;
+  display: flex;
+  margin-left: 15px;
 }
 
 .sideBarContent input[type="checkbox"] {
   margin-bottom: 15px; 
+}
+
+.sideBarContent button {
+  margin: 5px;
 }
 
 
