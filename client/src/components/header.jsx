@@ -5,9 +5,8 @@ function Header() {
         <header>
             <h1>TableSpotter</h1>
             <nav>
-                <ul>
-                    <li>Sign Up/Log In</li> 
-                </ul>
+                <a>Sign Up</a>
+                <a>Log In</a>
             </nav>
         </header>
     );

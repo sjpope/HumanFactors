@@ -16,9 +16,8 @@ header nav ul {
   padding: 0;
 }
 
-header nav ul li {
-  display: inline;
-  float: right;
+header nav a {
+  padding: 15px;
 }
 
 .search-icon-container {
