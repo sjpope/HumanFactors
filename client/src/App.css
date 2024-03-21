@@ -34,13 +34,13 @@ header nav a {
 }
 
 .search-icon-container h1 {
-    position: absolute; 
-    top: 10%; 
-    transform: translateY(-50%);
-    text-align: center; 
-    width: 100%; 
-    font-size: 36px;
-    font-weight: bold;
+  position: absolute; 
+  top: 10%; 
+  transform: translateY(-50%);
+  text-align: center; 
+  width: 100%; 
+  font-size: 36px;
+  font-weight: bold;
 }
 
 .search-icon-container input {
@@ -108,6 +108,27 @@ header nav a {
 .sideBarContent button {
   margin: 5px;
 }
+
+.restaurant-list-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 15%;
+}
+
+.restaurant-card-results {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  width: 85%; 
+  height: 200x;
+}
+
+.restaurant-card-results h2 {
+  margin-top: 0;
+}
+
 
 
 
