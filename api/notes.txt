@@ -1,0 +1,9 @@
+Steps
+
+1. Create django backend enviroment
+2. Create the routes and views
+3. Create mock data in the database
+4. Create the functions for backend
+5. Implement the frontend to display data.
+6. Integrate authentication
+7. Implement the filters to re query the data
