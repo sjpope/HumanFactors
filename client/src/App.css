@@ -11,13 +11,9 @@ header h1 {
   margin: 0;
 }
 
-header nav ul {
-  margin: 0;
-  padding: 0;
-}
-
 header nav a {
   padding: 15px;
+  margin-top: 100px;
 }
 
 .search-icon-container {
@@ -39,18 +35,18 @@ header nav a {
   transform: translateY(-50%);
   text-align: center; 
   width: 100%; 
-  font-size: 36px;
+  font-size: 35px;
   font-weight: bold;
 }
 
 .search-icon-container input {
   width: 400px;
   height: 35px;
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .search-icon-container button {
-  height: 40px;
+  height: 39px;
   margin: 15px;
 }
 
@@ -58,7 +54,7 @@ header nav a {
   display: flex;
   flex-wrap: wrap;
   justify-content: center; 
-  margin-top: 30vh; 
+  margin-top: 35vh; 
 }
 
 .restaurant-card {
