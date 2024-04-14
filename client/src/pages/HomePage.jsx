@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../App.css';
 import Header from '../components/header';
 import SearchBar from '../components/searchBar';
@@ -6,13 +6,18 @@ import RestaurantCard from '../components/restaurantCard';
 import Footer from '../components/footer';
 
 function HomePage() {
-  const restaurants = [
-    { name: 'Restaurant 1' },
-    { name: 'Restaurant 2' },
-    { name: 'Restaurant 3' },
-    { name: 'Restaurant 4' },
-    { name: 'Restaurant 5' }
-  ];
+  const [restaurants, setRestaurants] = useState([]);
+
+  useEffect(() => {
+    fetch('http://127.0.0.1:8000/home/')  
+      .then(response => response.json())
+      .then(data => {
+        setRestaurants(data);
+      })
+      .catch(error => {
+        console.error('Error fetching data: ', error);
+      });
+  }, []);
 
   return (
     <div>

@@ -10,7 +10,8 @@ from .utils import *
 
 from rest_framework import generics, status
 from rest_framework.views import APIView 
-from rest_framework.response import Response 
+from rest_framework.response import Response
+from rest_framework.exceptions import NotFound, PermissionDenied 
 
 
 class RestaurantListView(APIView):
@@ -38,7 +39,7 @@ class RestaurantDetailView(APIView):
         try:
             return Restaurant.objects.get(id=restaurant_id)
         except Restaurant.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            raise NotFound('A restaurant with this ID does not exist.')
 
     def get(self, request, restaurant_id):
         restaurant = self.get_object(restaurant_id)
@@ -58,19 +59,18 @@ class RestaurantDetailView(APIView):
         restaurant.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
 class SearchRestaurantsAPIView(APIView):
     """
     Search for restaurants by name or address.
     """
     def get(self, request):
         query = request.query_params.get('q', None)
-        if query is not None:
-            restaurants = Restaurant.objects.filter(Q(address__icontains=query) | Q(name__icontains=query))
-            serializer = RestaurantSerializer(restaurants, many=True)
-            return Response(serializer.data)
-        return Response({"message": "No query parameter provided."}, status=status.HTTP_400_BAD_REQUEST)
-
+        if not query:
+            return Response({"error": "Query parameter 'q' is missing."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        restaurants = Restaurant.objects.filter(Q(address__icontains=query) | Q(name__icontains=query))
+        serializer = RestaurantSerializer(restaurants, many=True)
+        return Response(serializer.data)
 
 class RecommendationAPIView(APIView):
     """
@@ -86,8 +86,15 @@ class DiningProfileAPIView(generics.RetrieveUpdateAPIView):
     """
     Retrieve or update a user's dining profile.
     """
-    queryset = DiningProfile.objects.all()
     serializer_class = DiningProfileSerializer
 
     def get_object(self):
-        return self.queryset.get(user=self.request.user)
+        try:
+            profile = DiningProfile.objects.get(user=self.request.user)
+            self.check_object_permissions(self.request, profile)
+            return profile
+        except DiningProfile.DoesNotExist:
+            raise NotFound('Dining profile not found.')
+        except PermissionDenied:
+            # Handle permission denied separately if needed
+            raise
