@@ -6,7 +6,7 @@ from django.dispatch import receiver
 class Restaurant(models.Model):
     name = models.CharField(max_length=255)
     
-    address = models.CharField(max_length=1024)
+    address = models.CharField(max_length=1024, default='Unknown Address')
     location = models.CharField(max_length=500)
     latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)

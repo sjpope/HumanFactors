@@ -4,6 +4,14 @@ Django settings for Reservation_App project.
 
 from pathlib import Path
 
+# Celery Configs 
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-itpv)nykxfotd^lwm*o5f8r+20gqc9p_gm-61!7%7!oqcchlsl"
 DEBUG = True
