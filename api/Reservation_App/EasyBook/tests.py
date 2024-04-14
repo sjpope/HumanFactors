@@ -1,10 +1,6 @@
 from django.test import TestCase
 from EasyBook.models import *
 
-
-
-
-
 """ RESTAURANT MOCK DATA """
 
 restaurants_data = [

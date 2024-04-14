@@ -10,6 +10,9 @@ urlpatterns = [
     
     path('search/', search_restaurants, name='search_restaurants'),
     
+    path('profile/', DiningProfileAPIView.as_view(), name='dining-profile'),
+    path('recommendations/', RecommendationAPIView.as_view(), name='recommendations'),
+    
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

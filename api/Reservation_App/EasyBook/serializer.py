@@ -1,10 +1,10 @@
 from rest_framework import serializers 
 from .models import *
   
-class RestaurantSerializer(serializers.ModelSerializer): 
-    class Meta: 
-        model = Restaurant 
-        fields = ['name', 'detail'] 
+class RestaurantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Restaurant
+        fields = '__all__'
         
 class DiningProfileSerializer(serializers.ModelSerializer):
     class Meta:
