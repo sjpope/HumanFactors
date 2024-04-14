@@ -9,6 +9,10 @@ SECRET_KEY = "django-insecure-itpv)nykxfotd^lwm*o5f8r+20gqc9p_gm-61!7%7!oqcchlsl
 DEBUG = True
 ALLOWED_HOSTS = []
 
+CORS_ALLOW_ALL_ORIGINS = True  
+ROOT_URLCONF = "Reservation_App.urls"
+WSGI_APPLICATION = "Reservation_App.wsgi.application"
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -18,6 +22,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     
     "EasyBook",
+    'corsheaders',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -28,9 +34,16 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    
+    'corsheaders.middleware.CorsMiddleware',
+    # 'django.middleware.common.CommonMiddleware',
 ]
 
-ROOT_URLCONF = "Reservation_App.urls"
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
 
 TEMPLATES = [
     {
@@ -47,8 +60,6 @@ TEMPLATES = [
         },
     },
 ]
-
-WSGI_APPLICATION = "Reservation_App.wsgi.application"
 
 DATABASES = {
     "default": {
@@ -76,7 +87,5 @@ LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
-
 STATIC_URL = "static/"
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

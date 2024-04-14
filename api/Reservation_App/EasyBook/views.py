@@ -1,11 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse, HttpResponse
 from .models import Restaurant, MenuItem
 from django.views.decorators.http import require_http_methods
 from django.core import serializers
 
 # def home_data_api_view(request):
-    
 #     # query models, send to frontend
 #     restaurants = Restaurant.objects.all()  
 #     data = {
@@ -63,4 +62,11 @@ def restaurant_detail_api_view(request, restaurant_id):
         except Restaurant.DoesNotExist:
             return JsonResponse({'message': 'Restaurant not found'}, status=404)
         
-
+def filtered_restaurants(request):
+    queryset = Restaurant.objects.all()
+    cuisine = request.GET.get('cuisine')
+    if cuisine:
+        queryset = queryset.filter(cuisine_type=cuisine)
+    # will need more filters here
+    data = serializers.serialize('json', queryset)
+    return HttpResponse(data, content_type='application/json')
