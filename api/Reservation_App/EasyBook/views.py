@@ -14,15 +14,15 @@ from django.core import serializers
 #     }
 #     return JsonResponse(data)
 
-# def results_data_api_view(request):
-#     # Passing filters in q params here
-#     search_query = request.GET.get('search', '')
-#     filter_results = MenuItem.objects.filter(name__icontains=search_query)  
-#     data = {
-#         'message': 'Placeholder data for results page',
-#         'results': list(filter_results.values())
-#     }
-#     return JsonResponse(data)
+def results_data_api_view(request):
+    # Passing filters in q params here
+    search_query = request.GET.get('search', '')
+    filter_results = MenuItem.objects.filter(name__icontains=search_query)  
+    data = {
+        'message': 'Placeholder data for results page',
+        'results': list(filter_results.values())
+    }
+    return JsonResponse(data)
 
 @require_http_methods(["GET"])
 def home_data_api_view(request):
@@ -35,7 +35,7 @@ def home_data_api_view(request):
 @require_http_methods(["GET", "POST", "PUT", "DELETE"])
 def restaurant_detail_api_view(request, restaurant_id):
     if request.method == 'GET':
-        # Retrieve a single restaurant by id
+        # Retrieve a restaurant by id
         try:
             restaurant = Restaurant.objects.get(id=restaurant_id)
             data = serializers.serialize('json', [restaurant])
@@ -44,19 +44,18 @@ def restaurant_detail_api_view(request, restaurant_id):
             return JsonResponse({'message': 'Restaurant not found'}, status=404)
 
     elif request.method == 'POST':
-        # Create a new restaurant entry
-        # You need to parse request body to get the restaurant data
-        # For example, you might use request.POST or request.data here
-        # Remember to handle exceptions and validation errors
+        
+        # TO-DO: Create a new restaurant entry and parse request body to get the restaurant data
+        
         pass
 
     elif request.method == 'PUT':
-        # Update an existing restaurant
-        # Similar to POST, you'll need to parse request body
+        
+        # TO-DO: Create logic to update an existing restaurant
+        
         pass
 
     elif request.method == 'DELETE':
-        # Delete a restaurant
         try:
             restaurant = Restaurant.objects.get(id=restaurant_id)
             restaurant.delete()
