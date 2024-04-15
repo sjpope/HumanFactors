@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import ResultsPage from './pages/ResultsPage'
 
 function App() {
+  // Note: use console.log for React logging
   return (
     <Router>
       <div>
