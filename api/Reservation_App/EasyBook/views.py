@@ -3,15 +3,55 @@ from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.core import serializers
 from django.db.models import Q
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 
 from .models import *
 from .serializer import *
 from .utils import *
+from .forms import RegisterForm
 
-from rest_framework import generics, status
+from rest_framework import generics, status, permissions
 from rest_framework.views import APIView 
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound, PermissionDenied 
+from rest_framework.permissions import AllowAny
+from rest_framework.authtoken.models import Token
+
+""" User Auth Views """
+class LoginView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        data = request.data
+        username = data.get('username', None)
+        password = data.get('password', None)
+        user = authenticate(username=username, password=password)
+        
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                token, created = Token.objects.get_or_create(user=user)
+                return Response({'token': token.key}, status=status.HTTP_200_OK)
+            else:
+                return Response({'detail': 'Account is not active.'}, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            return Response({'detail': 'Invalid Credentials or activate account.'}, status=status.HTTP_401_UNAUTHORIZED)
+        
+class LogoutView(APIView):
+    def post(self, request, format=None):
+        logout(request)
+        return Response(status=status.HTTP_200_OK)
+
+class RegisterView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        form = RegisterForm(request.data)
+        if form.is_valid():
+            user = form.save()
+            return Response({'status': 'success', 'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
+        return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class RestaurantListView(APIView):
@@ -29,7 +69,6 @@ class RestaurantListView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class RestaurantDetailView(APIView):
     """
@@ -78,9 +117,7 @@ class RecommendationAPIView(APIView):
     """
     def get(self, request):
         recommendations = get_recommendations(request.user)
-        # Need to Fix RecommendationSerializer. 
         return Response(recommendations)
-
 
 class DiningProfileAPIView(generics.RetrieveUpdateAPIView):
     """
