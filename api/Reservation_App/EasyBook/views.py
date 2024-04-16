@@ -53,7 +53,7 @@ class RegisterView(APIView):
             return Response({'status': 'success', 'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
         return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+""" Restaurant Views """
 class RestaurantListView(APIView):
     """
     List all restaurants, or create a new restaurant.
@@ -111,6 +111,7 @@ class SearchRestaurantsAPIView(APIView):
         serializer = RestaurantSerializer(restaurants, many=True)
         return Response(serializer.data)
 
+""" Recommendation Views """
 class RecommendationAPIView(APIView):
     """
     Get restaurant recommendations for the user.
@@ -133,5 +134,4 @@ class DiningProfileAPIView(generics.RetrieveUpdateAPIView):
         except DiningProfile.DoesNotExist:
             raise NotFound('Dining profile not found.')
         except PermissionDenied:
-            # Handle permission denied separately if needed
-            raise
+            raise NotFound('You do not have permission to access this profile.')
