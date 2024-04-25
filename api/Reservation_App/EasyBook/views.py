@@ -18,7 +18,27 @@ from rest_framework.exceptions import NotFound, PermissionDenied
 from rest_framework.permissions import AllowAny
 from rest_framework.authtoken.models import Token
 
-""" User Auth Views """
+import logging
+
+""" User Views """
+class UserProfileView(APIView):
+    def get(self, request):
+        user = request.user
+        profile = UserProfile.objects.get(user=user)
+        serializer = UserProfileSerializer(profile)
+        return Response(serializer.data)
+
+    def put(self, request):
+        user = request.user
+        profile = UserProfile.objects.get(user=user)
+        serializer = UserProfileSerializer(profile, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        
+        logging.error(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 class LoginView(APIView):
     permission_classes = (permissions.AllowAny,)
 

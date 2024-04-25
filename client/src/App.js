@@ -6,11 +6,12 @@ import ResultsPage from './pages/ResultsPage';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
 import Register from './pages/Register';
-
+import Profile from './pages/Profile';
+import { Navigate } from 'react-router-dom';
 
 // React Router setup
 function App() {
-  // Note: use console.log for React logging
+  const isAuthenticated = localStorage.getItem('token');
   return (
     <Router>
       <div>
@@ -20,6 +21,10 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/register" element={<Register />} />
+          <Route
+            path="/profile"
+            element={isAuthenticated ? <Profile /> : <Navigate to="/login" />}
+          />
         </Routes>
       </div>
     </Router>

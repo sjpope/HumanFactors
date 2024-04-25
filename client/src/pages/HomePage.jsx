@@ -3,9 +3,10 @@ import Header from '../components/header';
 import SearchBar from '../components/searchBar';
 import RestaurantCard from '../components/restaurantCard';
 import Footer from '../components/footer';
-
+import { Link } from 'react-router-dom';
 // HomePage.js (Fetching initial restaurant data)
 function HomePage() {
+  const isAuthenticated = localStorage.getItem('token');
   const [restaurants, setRestaurants] = useState([]);
 
   useEffect(() => {
@@ -21,6 +22,9 @@ function HomePage() {
     <div>
       <Header />
       <SearchBar />
+      <div className="profile-container">
+        {isAuthenticated && (<Link to="/profile">My Profile</Link>)}
+      </div>
       <div className="restaurant-cards-container">
         {restaurants.map((restaurant, index) => (
           <RestaurantCard key={index} name={restaurant.name} />

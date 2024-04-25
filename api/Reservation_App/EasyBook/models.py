@@ -35,10 +35,17 @@ class DiningProfile(models.Model):
     favorite_cuisines = models.TextField()
     desired_dining_experiences = models.TextField()
 
-    
-
     def __str__(self):
         return f'{self.user.username} Profile'
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_picture = models.ImageField(upload_to='profile_pics', blank=True)
+    dining_preferences = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.user.username
+    
 
 class MenuItem(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)

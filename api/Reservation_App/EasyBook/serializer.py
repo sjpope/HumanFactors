@@ -1,6 +1,12 @@
 from rest_framework import serializers 
 from .models import *
   
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ['profile_picture', 'dining_preferences']
+    
 class RestaurantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Restaurant
