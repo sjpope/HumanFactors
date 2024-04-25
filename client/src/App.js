@@ -4,6 +4,7 @@ import './App.css';
 import HomePage from './pages/HomePage';
 import ResultsPage from './pages/ResultsPage'
 
+// React Router setup
 function App() {
   // Note: use console.log for React logging
   return (

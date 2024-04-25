@@ -4,11 +4,13 @@ from .views import *
 
 app_name = 'EasyBook'
 
-urlpatterns = [
+urlpatterns = [ 
     
+    # /api/resturants/
     path('', RestaurantListView.as_view(), name='home_data_api'),
     path('restaurant/<int:restaurant_id>/', RestaurantDetailView.as_view(), name='restaurant_detail'),
 
+    # /api/search/?q=${encodeURIComponent(searchQuery)}
     path('search/', SearchRestaurantsAPIView.as_view(), name='search_restaurants'),
     
     path('profile/', DiningProfileAPIView.as_view(), name='dining-profile'),
