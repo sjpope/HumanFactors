@@ -1,3 +1,4 @@
+// header.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -6,16 +7,12 @@ function Header() {
 
     const handleRegister = (e) => {
         e.preventDefault();
-        
-        // Here you would typically open a registration modal or navigate to a registration page
-        navigate('/api/register');
-
-        // Since it's a form submission, you'd handle the registration via an API call.
+        navigate('/register'); // Updated to use the client-side path for register
     };
 
     const handleLogin = (e) => {
         e.preventDefault();
-        navigate('/api/login'); // Assuming you have a route set up for login
+        navigate('/login'); // Updated to use the client-side path for login
     };
 
     return (

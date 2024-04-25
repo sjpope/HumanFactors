@@ -8,7 +8,7 @@ function Register() {
     // TODO: Implement the register functionality
     const handleSubmit = (event) => {
         event.preventDefault();
-        fetch('http://127.0.0.1:8000/api/auth/register/', {
+        fetch('http://127.0.0.1:8000/api/register/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -26,10 +26,10 @@ function Register() {
         })
         .catch(() => setError('Failed to Register'));
     };
-
+    // form validation & improvements here
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
+        <div className="form-container">
+            <form onSubmit={handleSubmit} className="register-form">
                 <label>
                     Username:
                     <input type="text" value={username} onChange={e => setUsername(e.target.value)} />
