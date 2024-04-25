@@ -4,6 +4,29 @@ from django.contrib.auth.models import User
 from .models import *
 from .utils import *
 
+# Run this script inside Django's shell
+# python manage.py shell
+
+from EasyBook.models import Restaurant, Review, MenuItem
+from django.contrib.auth.models import User
+
+# Create Restaurants
+r1 = Restaurant.objects.create(name='The Gourmet Hut', address='123 Fancy St, Gourmet City', location='Downtown', latitude=34.052235, longitude=-118.243683, cuisine_type='French', health_rating=9.0, price_level=3)
+r2 = Restaurant.objects.create(name='Sushi Palace', address='321 Sushi Blvd, Fish Town', location='Uptown', latitude=35.689487, longitude=139.691711, cuisine_type='Japanese', health_rating=8.5, price_level=4)
+r3 = Restaurant.objects.create(name='Pizza Planet', address='404 Pie Lane, Cheesy Town', location='Suburbs', latitude=40.712776, longitude=-74.005974, cuisine_type='Italian', health_rating=7.5, price_level=2)
+
+# Assume User ID 1 exists
+user = User.objects.create(id=1, username='testuser', password='testpassword123')
+
+# Create Reviews
+Review.objects.create(user=user, restaurant=r1, rating=5, comment='Absolutely fantastic!')
+Review.objects.create(user=user, restaurant=r2, rating=4, comment='Great sushi, but a bit pricey.')
+Review.objects.create(user=user, restaurant=r3, rating=3, comment='Decent pizza, good for quick meals.')
+
+# Create Menu Items
+MenuItem.objects.create(restaurant=r1, name='Foie Gras', description='Delicate duck liver with a hint of brandy.', price=25.00)
+MenuItem.objects.create(restaurant=r2, name='California Roll', description='Crab stick, avocado, and cucumber.', price=12.50)
+MenuItem.objects.create(restaurant=r3, name='Pepperoni Pizza', description='Classic pepperoni with mozzarella cheese.', price=15.00)
 
 # python manage.py test EasyBook.tests.RecommendationSystemTest
 class RecommendationSystemTest(TestCase):
