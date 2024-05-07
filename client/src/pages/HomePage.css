@@ -6,11 +6,20 @@
 
 .restaurant-cards-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
     margin: 20px;
 }
-
+/*.restaurant-cards-container {
+    margin: 40px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    width: 90%;
+    max-width: 1200px;
+    position: relative;
+    z-index: 0;
+}*/
 .restaurant-card-link {
     text-decoration: none;
     color: inherit;

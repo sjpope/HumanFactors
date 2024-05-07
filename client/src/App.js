@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Logout from './pages/Logout';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
+import RestaurantDetail from './pages/RestaurantDetail';
 import { Navigate } from 'react-router-dom';
 
 // React Router setup
@@ -25,6 +26,7 @@ function App() {
             path="/profile"
             element={isAuthenticated ? <Profile /> : <Navigate to="/login" />}
           />
+          <Route path="/restaurant/:id" element={<RestaurantDetail />} />
         </Routes>
       </div>
     </Router>

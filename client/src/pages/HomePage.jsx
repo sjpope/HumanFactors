@@ -21,9 +21,9 @@ function HomePage() {
         <div>
             <Header />
             <SearchBar />
-            <div className="profile-container">
+            {/* <div className="profile-container">
                 {isAuthenticated && <Link to="/profile">My Profile</Link>}
-            </div>
+            </div> */}
             <div className="restaurant-cards-container">
                 {restaurants.map((restaurant, index) => (
                     <Link to={`/restaurant/${restaurant.id}`} key={index} className="restaurant-card-link">
