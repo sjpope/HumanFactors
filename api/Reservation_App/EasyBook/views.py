@@ -226,6 +226,15 @@ class ReservationView(APIView):
         serializer = ReservationSlotSerializer(upcoming_reservations, many=True)
         return Response(serializer.data)
    
+""" Review Views """
+class AddReviewAPIView(APIView):
+    def post(self, request, restaurant_id):
+        restaurant = get_object_or_404(Restaurant, pk=restaurant_id)
+        serializer = ReviewSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(restaurant=restaurant, user=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 """ Recommendation Views """
 class RecommendationAPIView(APIView):

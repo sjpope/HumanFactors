@@ -9,12 +9,9 @@ from .models import Review
 class ReviewForm(ModelForm):
     class Meta:
         model = Review
-        fields = [
-            'review_title',
-            'review_description',
-        ]
+        fields = ['title', 'description', 'rating', 'price']
         widgets = {
-            'review_description': Textarea(attrs={'cols': 80, 'rows': 8}),
+            'description': Textarea(attrs={'cols': 80, 'rows': 8}),
         }
     
 class RegisterForm(UserCreationForm):

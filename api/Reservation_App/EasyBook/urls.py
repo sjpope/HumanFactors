@@ -11,6 +11,8 @@ urlpatterns = [
     path('restaurant/<int:restaurant_id>/', RestaurantDetailView.as_view(), name='restaurant_detail'),
     
     path('restaurant/<int:restaurant_id>/book/', BookReservationAPIView.as_view(), name='book_reservation'),
+    path('restaurant/<int:restaurant_id>/add_review/', AddReviewAPIView.as_view(), name='add-review'),
+
     path('reservations/upcoming/', UpcomingReservationsAPIView.as_view(), name='upcoming_reservations'),
     
     path('restaurants/search/', FilteredSearchRestaurantsAPIView.as_view(), name='search_restaurants'),
