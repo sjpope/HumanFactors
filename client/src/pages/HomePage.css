@@ -1,0 +1,17 @@
+.profile-container {
+    text-align: right;
+    margin: 16px 0;
+    padding-right: 20px;
+}
+
+.restaurant-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 20px;
+}
+
+.restaurant-card-link {
+    text-decoration: none;
+    color: inherit;
+}

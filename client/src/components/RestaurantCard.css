@@ -1,0 +1,25 @@
+.restaurant-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.restaurant-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.restaurant-card h3 {
+    margin-bottom: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.restaurant-card p {
+    margin: 0;
+    font-size: 1em;
+    color: #555;
+}

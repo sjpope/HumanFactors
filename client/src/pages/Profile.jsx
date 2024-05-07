@@ -91,11 +91,11 @@ function Profile() {
             <form onSubmit={handleSubmit} className="profile-form">
                 <div className="form-group">
                     <label>Username:</label>
-                    <input type="text" value={user?.username} disabled />
+                    <input type="text" value={user?.username ?? ''} disabled />
                 </div>
-                <div className="form-group">
+                <div class="form-group">
                     <label>Email:</label>
-                    <input type="email" value={user?.email} disabled />
+                    <input type="email" value={user?.email ?? ''} disabled />
                 </div>
                 <div className="form-group">
                     <label>Profile Picture:</label>
