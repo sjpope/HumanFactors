@@ -5,9 +5,24 @@ function Profile() {
     const [user, setUser] = useState(null);
     const [profilePicture, setProfilePicture] = useState(null);
     const [diningPreferences, setDiningPreferences] = useState('');
+    const [upcomingReservations, setUpcomingReservations] = useState([]);
 
     useEffect(() => {
-        // TODO: Fetch user data from the backend and set it in state
+        // Fetch user data from the backend
+        const token = localStorage.getItem('token');
+        fetch('http://127.0.0.1:8000/api/profile/', {
+            headers: {
+                'Authorization': `Token ${token}`,
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            setUser(data);
+            setDiningPreferences(data.dining_preferences);
+            // Ensure upcomingReservations is initialized as an empty array
+            setUpcomingReservations(data.upcoming_reservations || []);
+        })
+        .catch(error => console.error('Error fetching profile:', error));
     }, []);
 
     if (!localStorage.getItem('token')) {
@@ -22,10 +37,25 @@ function Profile() {
         setDiningPreferences(event.target.value);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // TODO: Implement the logic to submit the form and update the user profile
+        const formData = new FormData();
+        formData.append('profile_picture', profilePicture);
+        formData.append('dining_preferences', diningPreferences);
+
+        const token = localStorage.getItem('token');
+        fetch('http://127.0.0.1:8000/api/profile/', {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Token ${token}`,
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => console.log('Profile updated:', data))
+        .catch(error => console.error('Failed to update profile:', error));
     };
+
 
     return (
         <div>
@@ -44,12 +74,28 @@ function Profile() {
                     Profile Picture:
                     <input type="file" onChange={handlePictureChange} />
                 </label>
+
                 <label>
                     Dining Preferences:
                     <textarea value={diningPreferences} onChange={handlePreferencesChange} />
                 </label>
                 <button type="submit">Update Profile</button>
+
             </form>
+
+            <div>
+                <h2>Upcoming Reservations</h2>
+                <ul>
+                    {upcomingReservations.map(reservation => (
+                        <li key={reservation.id}>
+                            {/* Display reservation details */}
+                            <p>{reservation.restaurant_name}</p>
+                            <p>{reservation.date_time}</p>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
         </div>
     );
 }

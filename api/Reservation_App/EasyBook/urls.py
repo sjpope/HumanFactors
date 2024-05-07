@@ -21,6 +21,9 @@ urlpatterns = [
     path('search/', SearchRestaurantsAPIView.as_view(), name='search_restaurants'),
     
     path('profile/', DiningProfileAPIView.as_view(), name='dining-profile'),
+    path('profile/<int:pk>/update', UserProfileUpdateAPIView.as_view(), name='update-profile'),
+
+
     path('recommendations/', RecommendationAPIView.as_view(), name='recommendations'),
     
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

@@ -22,6 +22,7 @@ from rest_framework.authtoken.models import Token
 import logging
 from django.utils.dateparse import parse_datetime
 from django_filters import rest_framework as filters
+from django.contrib.auth.models import AnonymousUser
 
 """ User Views """
 class UserProfileView(APIView):
@@ -251,14 +252,16 @@ class DiningProfileAPIView(generics.RetrieveUpdateAPIView):
     serializer_class = DiningProfileSerializer
 
     def get_object(self):
+        # Check if the user is authenticated
+        if isinstance(self.request.user, AnonymousUser):
+            raise PermissionDenied('Authentication credentials were not provided.')
+        
         try:
             profile = DiningProfile.objects.get(user=self.request.user)
             self.check_object_permissions(self.request, profile)
             return profile
         except DiningProfile.DoesNotExist:
             raise NotFound('Dining profile not found.')
-        except PermissionDenied:
-            raise NotFound('You do not have permission to access this profile.')
         
 class UserProfileUpdateAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
