@@ -9,7 +9,12 @@ urlpatterns = [
     # /api/resturants/
     path('restaurants/', RestaurantListView.as_view(), name='restaurant_list'),
     path('restaurant/<int:restaurant_id>/', RestaurantDetailView.as_view(), name='restaurant_detail'),
-
+    
+    path('restaurant/<int:restaurant_id>/book/', BookReservationAPIView.as_view(), name='book_reservation'),
+    path('reservations/upcoming/', UpcomingReservationsAPIView.as_view(), name='upcoming_reservations'),
+    
+    path('restaurants/search/', FilteredSearchRestaurantsAPIView.as_view(), name='search_restaurants'),
+    
     # /api/search/?q=${encodeURIComponent(searchQuery)}
     path('search/', SearchRestaurantsAPIView.as_view(), name='search_restaurants'),
     

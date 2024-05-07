@@ -1,7 +1,11 @@
+import json
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
+def get_default_user():
+    return User.objects.get_or_create(username='default_user')[0].id
 
 class Restaurant(models.Model):
     name = models.CharField(max_length=255)
@@ -14,7 +18,12 @@ class Restaurant(models.Model):
     cuisine_type = models.CharField(max_length=100)
     health_rating = models.DecimalField(max_digits=2, decimal_places=1)
     price_level = models.IntegerField()
-
+    
+    hours_of_operation = models.TextField(null=True, blank=True)
+    
+    def get_hours(self):
+        return json.loads(self.hours_of_operation)
+    
     def __str__(self):
         return self.name
     
@@ -57,6 +66,9 @@ class MenuItem(models.Model):
         return self.name
 
 class ReservationSlot(models.Model):
+    #     user = models.ForeignKey(User, on_delete=models.CASCADE, default=get_default_user)
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     date_time = models.DateTimeField()
 

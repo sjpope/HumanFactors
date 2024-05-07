@@ -3,7 +3,20 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
+from django.forms import ModelForm, Textarea
+from .models import Review
 
+class ReviewForm(ModelForm):
+    class Meta:
+        model = Review
+        fields = [
+            'review_title',
+            'review_description',
+        ]
+        widgets = {
+            'review_description': Textarea(attrs={'cols': 80, 'rows': 8}),
+        }
+    
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(required=False)  
 

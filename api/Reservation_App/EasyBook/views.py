@@ -1,3 +1,4 @@
+from datetime import timezone
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
@@ -19,6 +20,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework.authtoken.models import Token
 
 import logging
+from django.utils.dateparse import parse_datetime
+from django_filters import rest_framework as filters
 
 """ User Views """
 class UserProfileView(APIView):
@@ -123,22 +126,120 @@ class SearchRestaurantsAPIView(APIView):
     Search for restaurants by name or address.
     """
     def get(self, request):
-        query = request.query_params.get('q', None)
-        if not query:
-            return Response({"error": "Query parameter 'q' is missing."}, status=status.HTTP_400_BAD_REQUEST)
+        query = request.query_params.get('q')
+        price_level = request.query_params.get('price')
+        health_rating = request.query_params.get('health')
+        cuisine = request.query_params.get('cuisine')
         
-        restaurants = Restaurant.objects.filter(Q(address__icontains=query) | Q(name__icontains=query))
-        serializer = RestaurantSerializer(restaurants, many=True)
+        base_query = Restaurant.objects.all()
+        
+        if query:
+            base_query = base_query.filter(Q(name__icontains=query) | Q(address__icontains=query))
+        if price_level:
+            base_query = base_query.filter(price_level__lte=price_level)
+        if health_rating:
+            base_query = base_query.filter(health_rating__gte=health_rating)
+        if cuisine:
+            base_query = base_query.filter(cuisine_type__icontains=cuisine)
+
+        serializer = RestaurantSerializer(base_query, many=True)
         return Response(serializer.data)
 
+class FilteredSearchRestaurantsAPIView(APIView):
+    def get(self, request):
+        query_params = request.query_params
+        base_query = Restaurant.objects.all()
+
+        if 'q' in query_params:
+            base_query = base_query.filter(Q(name__icontains=query_params['q']) | Q(address__icontains=query_params['q']))
+
+        if 'price' in query_params:
+            base_query = base_query.filter(price_level__lte=query_params['price'])
+
+        if 'health' in query_params:
+            base_query = base_query.filter(health_rating__gte=query_params['health'])
+
+        if 'cuisine' in query_params:
+            base_query = base_query.filter(cuisine_type__icontains=query_params['cuisine'])
+
+        # Additional filters based on hours of operation, allergies, etc. can be implemented here
+        # For hours of operation, you'll need a custom method to parse and match the hours
+
+        serializer = RestaurantSerializer(base_query, many=True)
+        return Response(serializer.data)
+
+
+class RestaurantFilter(filters.FilterSet):
+    min_price_level = filters.NumberFilter(field_name="price_level", lookup_expr='gte')
+    max_price_level = filters.NumberFilter(field_name="price_level", lookup_expr='lte')
+    min_health_rating = filters.NumberFilter(field_name="health_rating", lookup_expr='gte')
+    cuisine_type = filters.CharFilter(field_name="cuisine_type", lookup_expr='icontains')
+
+    class Meta:
+        model = Restaurant
+        fields = ['cuisine_type', 'min_price_level', 'max_price_level', 'min_health_rating']
+        
+        
+""" Reservation Views """
+class BookReservationAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, restaurant_id):
+        user = request.user
+        datetime_str = request.data.get('date_time')
+        date_time = parse_datetime(datetime_str)
+
+        if date_time < timezone.now():
+            return Response({'error': 'Cannot book a reservation in the past.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        reservation = ReservationSlot(user=user, restaurant_id=restaurant_id, date_time=date_time)
+        reservation.save()
+        return Response({'status': 'Reservation booked successfully'}, status=status.HTTP_201_CREATED)
+    
+class UpcomingReservationsAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        upcoming_reservations = ReservationSlot.objects.filter(user=user, date_time__gte=timezone.now()).order_by('date_time')
+        serializer = ReservationSlotSerializer(upcoming_reservations, many=True)
+        return Response(serializer.data)
+
+class ReservationView(APIView):
+    """
+    Book and view reservations for a restaurant.
+    """
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, restaurant_id):
+        user = request.user
+        datetime_str = request.data.get('date_time')
+        date_time = parse_datetime(datetime_str)
+
+        reservation = ReservationSlot(user=user, restaurant_id=restaurant_id, date_time=date_time)
+        reservation.save()
+        return Response({'status': 'Reservation booked'}, status=status.HTTP_201_CREATED)
+
+    def get(self, request):
+        user = request.user
+        upcoming_reservations = ReservationSlot.objects.filter(user=user, date_time__gte=timezone.now())
+        serializer = ReservationSlotSerializer(upcoming_reservations, many=True)
+        return Response(serializer.data)
+   
+    
 """ Recommendation Views """
 class RecommendationAPIView(APIView):
     """
     Get restaurant recommendations for the user.
     """
     def get(self, request):
-        recommendations = get_recommendations(request.user)
-        return Response(recommendations)
+        user = request.user
+        try:
+            # Assuming `get_recommendations` handles both collaborative and content-based methods
+            recommendations = get_recommendations(user.id)
+            return Response({'recommendations': recommendations})
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_404_NOT_FOUND)
 
 class DiningProfileAPIView(generics.RetrieveUpdateAPIView):
     """
@@ -155,3 +256,21 @@ class DiningProfileAPIView(generics.RetrieveUpdateAPIView):
             raise NotFound('Dining profile not found.')
         except PermissionDenied:
             raise NotFound('You do not have permission to access this profile.')
+        
+class UserProfileUpdateAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        profile, created = UserProfile.objects.get_or_create(user=user)
+        serializer = UserProfileSerializer(profile)
+        return Response(serializer.data)
+
+    def put(self, request):
+        user = request.user
+        profile, created = UserProfile.objects.get_or_create(user=user)
+        serializer = UserProfileSerializer(profile, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
