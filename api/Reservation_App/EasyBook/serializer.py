@@ -17,6 +17,15 @@ class DiningProfileSerializer(serializers.ModelSerializer):
         model = DiningProfile
         fields = ['preferences', 'allergies', 'favorite_cuisines', 'desired_dining_experiences']
 
+class ReservationSlotSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField(read_only=True)
+    restaurant_name = serializers.CharField(source='restaurant.name', read_only=True)
+    date_time = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")  # Format datetime as needed
+
+    class Meta:
+        model = ReservationSlot
+        fields = ['id', 'user', 'restaurant_name', 'date_time']
+        
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review

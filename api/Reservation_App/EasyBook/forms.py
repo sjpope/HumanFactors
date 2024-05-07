@@ -22,12 +22,13 @@ class RegisterForm(UserCreationForm):
         fields = ["username", "email", "password1", "password2"]
 
     def clean_email(self):
-        email = self.cleaned_data['email'].lower()
-        r = User.objects.filter(email=email)
-        if r.exists():
-            raise ValidationError("Email already exists")
+        email = self.cleaned_data.get('email')  # Use get to avoid KeyError if email is not provided
+        if email:  # Check if email is not empty
+            email = email.lower()  # Normalize the email by making it lowercase
+            if User.objects.filter(email=email).exists():  # Check if email already exists in the database
+                raise ValidationError("Email already exists")
         return email
-
+    
     def save(self, commit=True):
         user = super(RegisterForm, self).save(commit=False)
         user.email = self.cleaned_data['email']

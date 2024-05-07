@@ -8,6 +8,9 @@ from django.dispatch import receiver
 def get_default_user():
     return User.objects.get_or_create(username='default_user')[0].id
 
+def get_default_category():
+    default_category, created = Category.objects.get_or_create(category_text='General')
+    return default_category.id
 class Category(models.Model):
     category_text = models.CharField(max_length=50)
 
@@ -15,8 +18,7 @@ class Category(models.Model):
         return self.category_text
 
 class Restaurant(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, default=get_default_category)
     name = models.CharField(max_length=255)
     
     address = models.CharField(max_length=1024, default='Unknown Address')
@@ -56,8 +58,8 @@ class Review(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='reviews')
     rating = models.IntegerField(default=0)
     price = models.IntegerField(default=0)
-    title = models.CharField(max_length=100)
-    description = models.TextField(max_length=500)
+    title = models.CharField(max_length=100, default='Default Title')
+    description = models.TextField(default='No description provided')    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

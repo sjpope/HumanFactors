@@ -16,14 +16,20 @@ function Header() {
         navigate('/login'); // Updated to use the client-side path for login
     };
 
-    const handleLogout = () => {
-        // Handle logout logic here
+    const handleLogout = (e) => {
+        e.preventDefault();
+        navigate('/logout'); // Updated to use the client-side path for login
+    };
+    const profilePage = (e) => {
+        e.preventDefault();
+        navigate('/profile');
     };
 
     return (
         <header>
             <h1>EasyBook</h1>
             <nav>
+                {isAuthenticated && <button onClick={profilePage}>Profile</button>}
                 {isAuthenticated && <button onClick={handleLogout}>Logout</button>}
                 <button onClick={handleRegister}>Register</button>
                 <button onClick={handleLogin}>Log In</button>
