@@ -1,0 +1,51 @@
+/* components/SideBar.css */
+.sideBar {
+    padding: 20px;
+    margin: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.sideBarContent {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+form button.active {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+form button {
+    margin: 5px 0;
+    padding: 10px;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: white;
+    transition: background-color 0.2s ease-in-out;
+}
+
+form button:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+form input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+input[type="text"] {
+    padding: 8px;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}

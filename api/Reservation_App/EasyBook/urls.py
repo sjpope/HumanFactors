@@ -12,6 +12,7 @@ urlpatterns = [
     
     path('restaurant/<int:restaurant_id>/book/', BookReservationAPIView.as_view(), name='book_reservation'),
     path('restaurant/<int:restaurant_id>/add_review/', AddReviewAPIView.as_view(), name='add-review'),
+    path('restaurant/<int:restaurant_id>/reviews/', RestaurantReviewsAPIView.as_view(), name='restaurant-reviews'),
 
     path('reservations/upcoming/', UpcomingReservationsAPIView.as_view(), name='upcoming_reservations'),
     

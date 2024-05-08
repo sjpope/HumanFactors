@@ -11,7 +11,8 @@ function RestaurantDetail({ restaurantId }) {
     const [dateTime, setDateTime] = useState('');
     const [review, setReview] = useState({ rating: '', text: '' });
     const [message, setMessage] = useState('');
-    
+    const [reviews, setReviews] = useState([]);
+
     useEffect(() => {
         fetch(`http://127.0.0.1:8000/api/restaurant/${id}/`)
             .then(response => response.json())
@@ -23,7 +24,15 @@ function RestaurantDetail({ restaurantId }) {
                 console.error('Error fetching restaurant details:', error);
                 setLoading(false);
             });
+
+        // Fetch reviews
+        fetch(`http://127.0.0.1:8000/api/restaurant/${id}/reviews/`)
+            .then(response => response.json())
+            .then(data => setReviews(data))
+            .catch(error => console.error('Error fetching reviews:', error));
+
     }, [id]);
+
     const handleReservation = (e) => {
         e.preventDefault();
         fetch(`http://127.0.0.1:8000/api/restaurant/${id}/book/`, {
@@ -40,7 +49,7 @@ function RestaurantDetail({ restaurantId }) {
 
     const handleReviewSubmit = (e) => {
         e.preventDefault();
-        fetch(`http://127.0.0.1:8000/api/restaurant/${id}/reviews/`, {
+        fetch(`http://127.0.0.1:8000/api/restaurant/${id}/add_review/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -223,6 +223,8 @@ class ReservationView(APIView):
    
 """ Review Views """
 class AddReviewAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
     def post(self, request, restaurant_id):
         restaurant = get_object_or_404(Restaurant, pk=restaurant_id)
         serializer = ReviewSerializer(data=request.data)
@@ -231,6 +233,16 @@ class AddReviewAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+class RestaurantReviewsAPIView(APIView):
+    """
+    Retrieve all reviews for a specific restaurant.
+    """
+    def get(self, request, restaurant_id):
+        restaurant = get_object_or_404(Restaurant, pk=restaurant_id)
+        reviews = Review.objects.filter(restaurant=restaurant)
+        serializer = ReviewSerializer(reviews, many=True)
+        return Response(serializer.data)
+
 """ Recommendation Views """
 class RecommendationAPIView(APIView):
     """
